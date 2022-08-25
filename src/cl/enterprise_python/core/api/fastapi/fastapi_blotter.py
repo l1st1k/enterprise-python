@@ -38,10 +38,12 @@ def create_trades(trade_count: int) -> List[TreeTrade]:
     ccy_count = len(ccy_list)
 
     # Create swap records
+    """TASK 3"""
     swaps = [
         TreeSwap(
             trade_id=f"T{(i + 1):03}",
             trade_type="Swap",
+            notional=(i+1)+100,
             legs=[
                 TreeLeg(leg_type="Fixed", leg_ccy=ccy_list[i % ccy_count]),
                 TreeLeg(leg_type="Floating", leg_ccy=ccy_list[(2 * i) % ccy_count]),
@@ -50,6 +52,22 @@ def create_trades(trade_count: int) -> List[TreeTrade]:
         for i in range(trade_count)
     ]
     return swaps
+
+
+def query_by_notional(min_notional: Optional[float] = None):
+    """TASK 3"""
+    if min_notional:
+        trades = TreeSwap.objects(notional__gte=min_notional).order_by("trade_id")
+    else:
+        trades = TreeSwap.objects.order_by("trade_id")
+    result = {"trades": [trade.to_json() for trade in trades]}
+    return result
+
+
+@app.get("/query_by_notional")
+def get_query_by_notional(min_notional: Optional[float] = None):
+    """TASK 3"""
+    return query_by_notional(min_notional)
 
 
 @app.get("/")

@@ -32,3 +32,12 @@ if __name__ == "__main__":
     api_url = "http://localhost:50301/get_trade"  # Port used by fastapi_blotter.py
     t3_trade = requests.post(api_url, params={"trade_id": "T003"})
     print(f"Trade with trade_id=T3: {t3_trade.json()}")
+
+    """TASK 4"""
+    api_url = "http://localhost:50301/query_by_notional"  # Port used by fastapi_blotter.py
+    response = requests.get(api_url, params={"min_notional": 200.0})
+    print(f"Request with min_notional: {response.json()}")
+
+    api_url = "http://localhost:50301/query_by_notional"  # Port used by fastapi_blotter.py
+    response = requests.get(api_url)
+    print(f"Request without min_notional: {response.json()}")

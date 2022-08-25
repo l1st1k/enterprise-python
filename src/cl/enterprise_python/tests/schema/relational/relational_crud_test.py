@@ -79,19 +79,23 @@ class RelCrudTest:
         ]
 
         # Create swap records using legs
+        """TASK 2"""
         swaps: List[RelationalTrade] = [
             RelationalSwap(
                 trade_id=f"T{i + 1}",
                 trade_type="Swap",
+                notional=(i+1) * 100,
                 legs=[fixed_legs[i], floating_legs[i]],
             )
             for i in range(0, 2)
         ]
 
         # Create bond records
+        """TASK 2"""
         bonds: List[RelationalTrade] = [
             RelationalBond(
                 trade_id=f"T{i + 1}",
+                notional=(i+1)*100,
                 trade_type="Bond",
                 bond_ccy=ccy_list[i % ccy_count],
             )
@@ -187,6 +191,12 @@ class RelCrudTest:
                         for trade in gbp_fixed_swaps
                     ]
                 )
+
+        """TASK 2"""
+        notional_query = list(
+            session.query(RelationalTrade)
+            .where(RelationalTrade.notional >= 200)
+        )
 
         # Verify result
         at.verify(result)

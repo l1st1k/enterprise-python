@@ -60,10 +60,12 @@ class TreeCrudTest:
         ccy_count = len(ccy_list)
 
         # Create swap records
+        """TASK 2"""
         swaps = [
             TreeSwap(
                 trade_id=f"T{i+1}",
                 trade_type="Swap",
+                notional=(i + 1) * 100,
                 legs=[
                     TreeLeg(leg_type="Fixed", leg_ccy=ccy_list[i % ccy_count]),
                     TreeLeg(leg_type="Floating", leg_ccy="EUR"),
@@ -71,9 +73,11 @@ class TreeCrudTest:
             )
             for i in range(0, 2)
         ]
+        """TASK 2"""
         bonds = [
             TreeBond(
-                trade_id=f"T{i+1}", trade_type="Bond", bond_ccy=ccy_list[i % ccy_count]
+                trade_id=f"T{i+1}", trade_type="Bond", bond_ccy=ccy_list[i % ccy_count],
+                notional=(i + 1) * 100
             )
             for i in range(2, 3)
         ]
@@ -149,6 +153,9 @@ class TreeCrudTest:
                 for trade in gbp_fixed_swaps
             ]
         )
+
+        """TASK 2"""
+        notional_query = TreeTrade.objects(notional__gte=200)
 
         # Further study - for MongoDB and certain other databases, wildcard queries
         # can be used to simultaneously query for GBP currency in both legs when this
